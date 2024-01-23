@@ -1,1 +1,46 @@
-var t=require("axios"),e=require("crypto"),i=require("js-base64");function r(t){return t&&"object"==typeof t&&"default"in t?t:{default:t}}function n(t){if(t&&t.__esModule)return t;var e=Object.create(null);return t&&Object.keys(t).forEach(function(i){if("default"!==i){var r=Object.getOwnPropertyDescriptor(t,i);Object.defineProperty(e,i,r.get?r:{enumerable:!0,get:function(){return t[i]}})}}),e.default=t,e}var o=/*#__PURE__*/r(t),c=/*#__PURE__*/n(e);function u(t,e){t.prototype=Object.create(e.prototype),t.prototype.constructor=t,p(t,e)}function p(t,e){return p=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(t,e){return t.__proto__=e,t},p(t,e)}var a=/*#__PURE__*/function(){function t(t){this.apiKey=void 0,this.apiUrl=void 0,this.profileId=void 0,this.apiSecret=void 0,this.callbackToken=void 0,this.apiKey=t.apiKey,this.apiUrl=t.apiUrl?t.apiUrl:"https://api.cryptochill.com",this.profileId=t.profileId,this.apiSecret=t.apiSecret,this.callbackToken=t.callbackToken}var e=t.prototype;return e.encodeHmac=function(t,e){return c.createHmac("sha256",t).update(e).digest("hex")},e.cryptochillApiRequest=function(t,e,r){void 0===r&&(r="GET");var n="/v1/"+t+"/";e.request=n,e.nonce=(new Date).getTime();var c=JSON.stringify(e),u=i.Base64.encode(c),p=this.encodeHmac(this.apiSecret,u);return o.default({method:r,url:this.apiUrl+n,headers:{"X-CC-KEY":this.apiKey,"X-CC-PAYLOAD":u,"X-CC-SIGNATURE":p}})},t}(),s=/*#__PURE__*/function(t){function e(){return t.apply(this,arguments)||this}return u(e,t),e.prototype.getAccount=function(){return this.cryptochillApiRequest("account/settings/")},e}(a),l="invoices",h=/*#__PURE__*/function(t){function e(){return t.apply(this,arguments)||this}u(e,t);var i=e.prototype;return i.listInvoices=function(t){return this.cryptochillApiRequest(l)},i.getInvoice=function(t){return this.cryptochillApiRequest(l+"/"+t)},i.createInvoice=function(t){return this.cryptochillApiRequest(l,t,"POST")},e}(a);exports.Cryptochill=function(t){this.account=void 0,this.invoices=void 0,this.account=new s(t),this.invoices=new h(t)};
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Cryptochill = void 0;
+const account_1 = require("./account");
+const autoConversions_1 = require("./autoConversions");
+const autoFunding_1 = require("./autoFunding");
+const autoPayouts_1 = require("./autoPayouts");
+const base_1 = require("./base");
+const callbacks_1 = require("./callbacks");
+const conversions_1 = require("./conversions");
+const exchangeRates_1 = require("./exchangeRates");
+const invoices_1 = require("./invoices");
+const payouts_1 = require("./payouts");
+const profiles_1 = require("./profiles");
+const transactions_1 = require("./transactions");
+const wallets_1 = require("./wallets");
+class Cryptochill extends base_1.CryptochillBase {
+    account;
+    invoices;
+    autoConversions;
+    autoFunding;
+    autoPayouts;
+    callbacks;
+    conversions;
+    exchangeRates;
+    payouts;
+    profiles;
+    transactions;
+    wallets;
+    constructor(config) {
+        super(config);
+        this.account = new account_1.Account(config);
+        this.invoices = new invoices_1.Invoices(config);
+        this.autoConversions = new autoConversions_1.AutoConversions(config);
+        this.autoFunding = new autoFunding_1.AutoFunding(config);
+        this.autoPayouts = new autoPayouts_1.AutomaticPayouts(config);
+        this.callbacks = new callbacks_1.Callbacks(config);
+        this.conversions = new conversions_1.Conversions(config);
+        this.exchangeRates = new exchangeRates_1.ExchangeRates(config);
+        this.payouts = new payouts_1.Payouts(config);
+        this.profiles = new profiles_1.Profiles(config);
+        this.transactions = new transactions_1.Transactions(config);
+        this.wallets = new wallets_1.Wallets(config);
+    }
+}
+exports.Cryptochill = Cryptochill;

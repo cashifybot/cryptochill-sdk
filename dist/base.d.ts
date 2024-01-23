@@ -10,7 +10,7 @@ export declare abstract class CryptochillBase {
     private apiUrl;
     private profileId;
     private apiSecret;
-    private callbackToken;
+    callbackToken: string | "";
     constructor(config: Config);
     encodeHmac(key: string, message: string): string;
     protected cryptochillApiRequest<T>(endpoint: string, payload?: any, method?: string): Promise<T>;
